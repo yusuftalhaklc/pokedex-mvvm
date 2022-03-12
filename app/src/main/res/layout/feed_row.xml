@@ -42,7 +42,6 @@
             android:layout_height="75dp"
             android:layout_marginStart="92dp"
             android:layout_marginTop="32dp"
-            android:background="@drawable/example"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

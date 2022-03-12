@@ -9,7 +9,7 @@ import retrofit2.http.Path
 
 interface PokedexApi {
 
-    @GET("pokemon?limit=10&offset=0")
+    @GET("pokemon?limit=100&offset=0")
     fun getAll() : Call<PokedexFeedList>
 
     @GET("pokemon/{name}")

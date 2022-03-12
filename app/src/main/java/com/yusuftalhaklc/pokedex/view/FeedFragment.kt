@@ -45,16 +45,16 @@ class FeedFragment : Fragment() {
         feedRecyclerView.adapter = adapter
 
 
-
         observeData()
     }
 
     private fun observeData(){
 
-
-
         viewModel.livefeedModelList.observe(viewLifecycleOwner, Observer {
-            adapter.refreshData(it)
+            it?.let{
+                adapter.refreshData(it)
+            }
+
         })
 
         viewModel.loading.observe(viewLifecycleOwner, Observer {

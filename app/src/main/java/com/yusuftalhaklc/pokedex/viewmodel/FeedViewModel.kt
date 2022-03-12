@@ -15,7 +15,8 @@ import retrofit2.Response
 class FeedViewModel : ViewModel() {
     private var service = PokedexAPIService()
 
-    var feedModelList = ArrayList<FeedModel>()
+    var resultList = ArrayList<Result>()
+    var modelList = ArrayList<FeedModel>()
     var livefeedModelList = MutableLiveData<List<FeedModel>>()
     var feedLiveData = MutableLiveData<List<Result>>()
     var detailsLiveData = MutableLiveData<DetailModel>()
@@ -24,14 +25,16 @@ class FeedViewModel : ViewModel() {
 
 
    fun getData(){
-
         loading.value = true
         service.getFeedFromApi().enqueue(object : Callback<PokedexFeedList>{
             override fun onResponse(call: Call<PokedexFeedList>, response: Response<PokedexFeedList>) {
                if(response.isSuccessful){
-                   loading.value = false
                    feedLiveData.value = response.body()?.results
-                   startInitialDetails()
+
+                   resultList = feedLiveData.value as ArrayList<Result>
+                   initialDetails(resultList)
+
+                   Log.e("Model Feed",feedLiveData.value.toString())
 
                }
             }
@@ -41,17 +44,17 @@ class FeedViewModel : ViewModel() {
             }
 
         })
-
     }
 
-    fun startInitialDetails(){
-        for (i in feedLiveData.value!!){
+    fun initialDetails(newList:ArrayList<Result>){
+        for (i in newList){
             getDetails(i.name)
         }
-        livefeedModelList.value = feedModelList
+        loading.value = false
     }
 
-    fun getDetails(name:String){
+
+    private fun getDetails(name:String){
         service.getDetailFromApi(name).enqueue(object : Callback<DetailModel>{
             override fun onResponse(call: Call<DetailModel>, response: Response<DetailModel>) {
                 if(response.isSuccessful){
@@ -61,8 +64,9 @@ class FeedViewModel : ViewModel() {
                     val name =  detailsLiveData.value?.name.toString()
                     val imgUrl =  detailsLiveData.value?.sprites?.other?.dream_world?.front_default.toString()
                     val model = FeedModel(name,imgUrl)
+                    modelList.add(model)
 
-                    feedModelList.add(model)
+                    livefeedModelList.postValue(modelList)
 
                 }
             }
