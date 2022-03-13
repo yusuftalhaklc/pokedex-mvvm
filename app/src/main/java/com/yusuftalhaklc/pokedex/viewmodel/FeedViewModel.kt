@@ -13,18 +13,20 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class FeedViewModel : ViewModel() {
+
     private var service = PokedexAPIService()
 
     var resultList = ArrayList<Result>()
     var modelList = ArrayList<FeedModel>()
+
     var livefeedModelList = MutableLiveData<List<FeedModel>>()
     var feedLiveData = MutableLiveData<List<Result>>()
     var detailsLiveData = MutableLiveData<DetailModel>()
+
     var loading = MutableLiveData<Boolean>()
     var error = MutableLiveData<Boolean>()
 
-
-   fun getData(){
+    fun getData(){
         loading.value = true
         service.getFeedFromApi().enqueue(object : Callback<PokedexFeedList>{
             override fun onResponse(call: Call<PokedexFeedList>, response: Response<PokedexFeedList>) {
@@ -33,16 +35,12 @@ class FeedViewModel : ViewModel() {
 
                    resultList = feedLiveData.value as ArrayList<Result>
                    initialDetails(resultList)
-
-                   Log.e("Model Feed",feedLiveData.value.toString())
-
                }
             }
             override fun onFailure(call: Call<PokedexFeedList>, t: Throwable) {
                 loading.value = false
                 error.value = true
             }
-
         })
     }
 
@@ -53,12 +51,10 @@ class FeedViewModel : ViewModel() {
         loading.value = false
     }
 
-
     private fun getDetails(name:String){
         service.getDetailFromApi(name).enqueue(object : Callback<DetailModel>{
             override fun onResponse(call: Call<DetailModel>, response: Response<DetailModel>) {
                 if(response.isSuccessful){
-
                     detailsLiveData.value = response.body()
 
                     val name =  detailsLiveData.value?.name.toString()
@@ -70,12 +66,9 @@ class FeedViewModel : ViewModel() {
 
                 }
             }
-
             override fun onFailure(call: Call<DetailModel>, t: Throwable) {
             }
 
         })
-
     }
-
 }

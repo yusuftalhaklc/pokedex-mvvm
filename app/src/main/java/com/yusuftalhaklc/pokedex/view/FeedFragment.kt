@@ -1,5 +1,6 @@
 package com.yusuftalhaklc.pokedex.view
 
+import android.animation.Animator
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,12 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yusuftalhaklc.pokedex.viewmodel.FeedViewModel
 import com.yusuftalhaklc.pokedex.R
 import com.yusuftalhaklc.pokedex.adapter.FeedModelAdapter
 import com.yusuftalhaklc.pokedex.model.FeedModel
 import kotlinx.android.synthetic.main.fragment_feed.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 class FeedFragment : Fragment() {
 
@@ -45,11 +49,34 @@ class FeedFragment : Fragment() {
         feedRecyclerView.adapter = adapter
 
 
+        settingsButton.setOnClickListener {
+            settingsButton.playAnimation()
+            settingsButton.addAnimatorListener(object:Animator.AnimatorListener{
+                override fun onAnimationStart(p0: Animator?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onAnimationEnd(p0: Animator?) {
+                    // it will been changed as setting fragment
+                    val action = FeedFragmentDirections.actionFeedFragmentToDetailsFragment()
+                    Navigation.findNavController(it).navigate(action)
+                }
+
+                override fun onAnimationCancel(p0: Animator?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onAnimationRepeat(p0: Animator?) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+        }
+
         observeData()
     }
 
     private fun observeData(){
-
         viewModel.livefeedModelList.observe(viewLifecycleOwner, Observer {
             it?.let{
                 adapter.refreshData(it)
@@ -59,16 +86,16 @@ class FeedFragment : Fragment() {
 
         viewModel.loading.observe(viewLifecycleOwner, Observer {
             if (it == true){
+                loadingBar.playAnimation()
                 feedRecyclerView.visibility =  View.GONE
                 loadingBar.visibility = View.VISIBLE
             }
             else{
                 loadingBar.visibility = View.GONE
+                loadingBar.pauseAnimation()
                 feedRecyclerView.visibility =  View.VISIBLE
             }
         })
-
     }
-
 
 }

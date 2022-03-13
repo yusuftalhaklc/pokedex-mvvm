@@ -6,24 +6,63 @@
     android:layout_height="match_parent">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:padding="4dp"
-        android:id="@+id/feedRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/settingsButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="38dp"
+        app:lottie_rawRes="@raw/setting"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:layout_width="410dp"
+        android:layout_height="410dp"
+        android:layout_marginTop="-156dp"
+        android:layout_marginEnd="-152dp"
+        android:src="@drawable/ic_pokedex"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Pokedex"
+        android:textColor="@color/black"
+        android:textSize="32sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/loadingBar"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/feedRecyclerView"
+        android:nestedScrollingEnabled="true"
+        android:overScrollMode="never"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loadingBar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
-        />
+        app:layout_constraintTop_toTopOf="@+id/feedRecyclerView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:lottie_rawRes="@raw/pokemonloading"
+        app:lottie_autoPlay="true"
+        android:visibility="visible"
+        app:lottie_loop="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
