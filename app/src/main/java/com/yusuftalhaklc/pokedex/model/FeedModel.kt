@@ -4,5 +4,6 @@ import android.media.Image
 
 data class FeedModel(
     var name:String,
-    var imageUrl:String
+    var imageUrl:String,
+    var imagecode:String
 )

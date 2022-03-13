@@ -25,6 +25,7 @@ class FeedViewModel : ViewModel() {
 
     var loading = MutableLiveData<Boolean>()
     var error = MutableLiveData<Boolean>()
+    var settingStatus = MutableLiveData<Boolean>()
 
     fun getData(){
         loading.value = true
@@ -59,16 +60,18 @@ class FeedViewModel : ViewModel() {
 
                     val name =  detailsLiveData.value?.name.toString()
                     val imgUrl =  detailsLiveData.value?.sprites?.other?.dream_world?.front_default.toString()
-                    val model = FeedModel(name,imgUrl)
-                    modelList.add(model)
+                    val type = detailsLiveData.value?.types?.get(0)?.type?.name
+
+                    val model = type?.let { FeedModel(name,imgUrl, it) }
+                    if (model != null) {
+                        modelList.add(model)
+                    }
 
                     livefeedModelList.postValue(modelList)
-
                 }
             }
             override fun onFailure(call: Call<DetailModel>, t: Throwable) {
             }
-
         })
     }
 }
